@@ -2,7 +2,9 @@
   "name": "id3-ui-sample",
   "version": "0.1.0",
   "private": true,
+  "main": "main.js",
   "scripts": {
+    "electron-dev": "NODE_ENV=development electron .",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -18,6 +20,7 @@
     "@vue/cli-plugin-eslint": "^3.11.0",
     "@vue/cli-service": "^3.11.0",
     "babel-eslint": "^10.0.1",
+    "electron": "^6.0.11",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "vue-template-compiler": "^2.6.10"
