@@ -1,13 +1,8 @@
 <template>
   <div>
     <h1 class="text-center">Choose the files that you want to edit:</h1>
-    <p>{{ mainFolder }}</p>
     <ul class="list-group mt-3">
-      <li class="list-group-item">Lorem</li>
-      <li class="list-group-item">Lorem</li>
-      <li class="list-group-item">Lorem</li>
-      <li class="list-group-item">Lorem</li>
-      <li class="list-group-item">Lorem</li>
+      <li class="list-group-item" v-for="file in files" v-bind:key="file">{{ file }}</li>
     </ul>
   </div>
 </template>
@@ -21,7 +16,7 @@ export default {
   computed: {
     // mix this into the outer object with the object spread operator
     ...mapState([
-      'mainFolder'
+      'files'
     ])
   }
 }

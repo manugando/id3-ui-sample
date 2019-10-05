@@ -16,7 +16,7 @@ export default {
     onFolderPickClick: function() {
       remote.dialog.showOpenDialog({ properties: ['openDirectory'] }).then(result => {
         if(result.filePaths.length > 0) {
-          this.$store.commit('setMainFolder', result.filePaths[0]);
+          this.$store.dispatch('chooseMainFolder', result.filePaths[0]);
           this.$router.push('file-list');
         }
       });
