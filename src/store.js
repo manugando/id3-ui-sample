@@ -13,34 +13,67 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     mainFolder: null,
-    files: []
+    files: [],
+    filesToEdit: [],
   },
   mutations: {
-    setMainFolder(state, mainFolder) {
+    setMainFolder: function(state, mainFolder) {
       state.mainFolder = mainFolder;
     },
-    setFiles(state, files) {
+    setFiles: function(state, files) {
       state.files = files;
+    },
+    clearFilesToEdit: function(state) {
+      state.filesToEdit = [];
+    },
+    addFileToEdit: function(state, file) {
+      state.filesToEdit.push(file);
+    },
+    removeFileToEdit: function(state, file) {
+      let elementIndex = state.filesToEdit.indexOf(file);
+      if(elementIndex >= 0) {
+        state.filesToEdit.splice(elementIndex, 1);
+      }
+    }
+  },
+  getters: {
+    isFileToEdit: (state) => (file) => {
+      return state.filesToEdit.find(fileToEdit => fileToEdit.name == file.name) != undefined;
     }
   },
   actions: {
-    chooseMainFolder({ commit, state, dispatch }, mainFolder) {
+    chooseMainFolder: function({ commit, state, dispatch }, mainFolder) {
       commit('setMainFolder', mainFolder);
       return fsReaddir(state.mainFolder).then((files) => {
         dispatch('prepareFiles', files);
       });
     },
-    prepareFiles({ commit, state }, files) {
+    prepareFiles: async function({ commit, state }, files) {
+      let fileList = [];
       let mp3Files = files.filter(file => file.endsWith('.mp3'));
-      mp3Files.forEach(mp3File => {
+      commit('clearFilesToEdit');
+      for(const mp3File of mp3Files) {
         let mp3FilePath = path.join(state.mainFolder, mp3File);
-        console.log(mp3FilePath);
-        nodeID3Read(mp3FilePath).then((tags) => {
-          console.log(tags);
-        }).catch((error) => {
-          console.error(error);
-        });
-      });
+        let tags = await nodeID3Read(mp3FilePath);
+        let fileObj = {
+          name: mp3File,
+          path: mp3FilePath,
+          artist: tags['artist'],
+          album: tags['album'],
+        };
+        fileList.push(fileObj);
+        if(fileObj.artist == null || fileObj.album == null) {
+          commit('addFileToEdit', fileObj);
+        }
+      }
+      commit('setFiles', fileList);
+    },
+    toggleFileToEdit: function({ getters, commit }, file) {
+      if(getters.isFileToEdit(file)) {
+        commit('removeFileToEdit', file);
+      } else {
+        commit('addFileToEdit', file);
+      }
     }
   }
 })
