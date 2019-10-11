@@ -1,13 +1,17 @@
 <template>
   <div>
     <h1 class="text-center">Write the tags:</h1>
-    <div class="form-group my-3">
-      <input type="text" class="form-control form-control-lg" placeholder="Artist" v-model="artist">
+    <div class="card">
+      <div class="card-body">
+        <div class="form-group my-3">
+          <input type="text" class="form-control form-control-lg" placeholder="Artist" v-model="artist">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control form-control-lg" placeholder="Album" v-model="album">
+        </div>
+        <p class="text-center mb-0 mt-3"><button v-on:click="onSaveClick" class="btn btn-lg btn-funky"><i class="icon ion-md-save"></i>&nbsp;&nbsp;Save</button></p>
+      </div>
     </div>
-    <div class="form-group">
-      <input type="text" class="form-control form-control-lg" placeholder="Album" v-model="album">
-    </div>
-    <p class="text-center"><button v-on:click="onSaveClick" class="btn btn-primary">Save</button></p>
   </div>
 </template>
 

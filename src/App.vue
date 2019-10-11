@@ -1,10 +1,13 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <span class="navbar-brand" href="#">Id3 UI</span>
-    </nav>
-    <div class="container mt-3">
+    <div class="container py-3">
       <router-view/>
     </div>
   </div>
 </template>
+
+<style scoped>
+  .container {
+    min-height: 100vh;
+  }
+</style>

@@ -1,8 +1,12 @@
 <template>
   <div class="text-center">
     <h1>Welcome!</h1>
-    <p>Pick a folder to start:</p>
-    <p><button v-on:click="onFolderPickClick" class="btn btn-primary">Pick a folder</button></p>
+    <div class="card">
+      <div class="card-body">
+        <p>Pick a folder to start:</p>
+        <p><button v-on:click="onFolderPickClick" class="btn btn-lg btn-funky"><i class="icon ion-md-folder"></i>&nbsp;&nbsp;Pick a folder</button></p>
+      </div>
+    </div>
   </div>
 </template>
 
