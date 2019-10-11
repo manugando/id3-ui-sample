@@ -1,8 +1,18 @@
 <template>
-  <li class="list-group-item" v-bind:class="{ 'is-to-edit': isFileToEdit }" v-on:click="onClick">
-    {{ file.name }}
-    <span v-if="hasArtist"> - {{ file.artist }}</span>
-    <span v-if="hasAlbum"> - {{ file.album }}</span>
+  <li class="list-group-item row" v-bind:class="{ 'is-to-edit': isFileToEdit }" v-on:click="onClick">
+    <div class="row w-100">
+      <div class="col-4">
+        {{ file.name }}
+      </div>
+      <div v-if="hasArtist" class="col-4"> 
+        <i class="icon ion-md-person"></i>
+        {{ file.artist }}
+      </div>
+      <div v-if="hasAlbum" class="col-4">
+        <i class="icon ion-md-disc"></i>
+        {{ file.album }}
+      </div>
+    </div>
   </li>
 </template>
 

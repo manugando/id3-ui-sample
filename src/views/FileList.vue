@@ -4,6 +4,7 @@
     <ul class="list-group my-3">
       <file-list-item v-for="file in files" v-bind:key="file.name" v-bind:file="file"></file-list-item>
     </ul>
+    <p class="text-center"><button v-on:click="onEditTagsClick" class="btn btn-primary">Edit tags</button></p>
   </div>
 </template>
 
@@ -22,6 +23,15 @@ export default {
   },
   components: {
     FileListItem
+  },
+  methods: {
+    onEditTagsClick: function() {
+      if(this.$store.state.filesToEdit.length > 0) {
+        this.$router.push('edit-tags');
+      } else {
+        window.alert('You must choose at least one file!');
+      }
+    }
   }
 }
 </script>

@@ -42,11 +42,16 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    chooseMainFolder: function({ commit, state, dispatch }, mainFolder) {
+    reset: function({ commit }) {
+      commit('setMainFolder', null);
+      commit('setFiles', []);
+      commit('clearFilesToEdit');
+    },
+    chooseMainFolder: async function({ commit, state, dispatch }, mainFolder) {
+      await dispatch('reset');
       commit('setMainFolder', mainFolder);
-      return fsReaddir(state.mainFolder).then((files) => {
-        dispatch('prepareFiles', files);
-      });
+      let files = await fsReaddir(state.mainFolder);
+      return dispatch('prepareFiles', files);
     },
     prepareFiles: async function({ commit, state }, files) {
       let fileList = [];
