@@ -50,18 +50,18 @@ export default new Vuex.Store({
     chooseMainFolder: async function({ commit, state, dispatch }, mainFolder) {
       await dispatch('reset');
       commit('setMainFolder', mainFolder);
-      let files = await fsReaddir(state.mainFolder);
-      return dispatch('prepareFiles', files);
+      let fileNames = await fsReaddir(state.mainFolder);
+      return dispatch('prepareFiles', fileNames);
     },
-    prepareFiles: async function({ commit, state }, files) {
+    prepareFiles: async function({ commit, state }, fileNames) {
       let fileList = [];
-      let mp3Files = files.filter(file => file.endsWith('.mp3'));
+      let mp3FileNames = fileNames.filter(fileName => fileName.endsWith('.mp3'));
       commit('clearFilesToEdit');
-      for(const mp3File of mp3Files) {
-        let mp3FilePath = path.join(state.mainFolder, mp3File);
+      for(const mp3FileName of mp3FileNames) {
+        let mp3FilePath = path.join(state.mainFolder, mp3FileName);
         let tags = await nodeID3Read(mp3FilePath);
         let fileObj = {
-          name: mp3File,
+          name: mp3FileName,
           path: mp3FilePath,
           artist: tags['artist'],
           album: tags['album'],
@@ -79,6 +79,16 @@ export default new Vuex.Store({
       } else {
         commit('addFileToEdit', file);
       }
+    },
+    processFilesToEdit: function({ commit, state }, tags) {
+      let doneWithoutErrors = true;
+      for(const fileToEdit of state.filesToEdit) {
+        if(!NodeID3.update(tags, fileToEdit.path)) {
+          doneWithoutErrors = false;
+        }
+      }
+      commit('clearFilesToEdit');
+      return doneWithoutErrors;
     }
   }
 })

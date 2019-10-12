@@ -16,8 +16,6 @@
 </template>
 
 <script>
-const NodeID3 = window.require('node-id3');
-
 export default {
   name: 'edit-tags',
   data: function() {
@@ -27,24 +25,13 @@ export default {
     }
   },
   methods: {
-    onSaveClick: function() {
-      let doneWithErrors = false;
+    onSaveClick: async function() {
       if(this.artist != '' && this.album != '') {
-        let tags = {
-          artist: this.artist,
-          album: this.album,
-        }
-        for(const fileToEdit of this.$store.state.filesToEdit) {
-          if(!NodeID3.update(tags, fileToEdit.path)) {
-            doneWithErrors = true;
-          }
-        }
-        if(doneWithErrors) {
-          window.alert('Done with errors :(');
-        } else {
-          window.alert('Done!');
-        }
-        this.$store.dispatch('reset').then(() => this.$router.push('/'));
+        let tags = { artist: this.artist, album: this.album };
+        let success = await this.$store.dispatch('processFilesToEdit', tags);
+        window.alert(success ? 'Done!' : 'Done with errors :(');
+        await this.$store.dispatch('reset');
+        this.$router.push('/')
       } else {
         window.alert('Missing data!');
       }

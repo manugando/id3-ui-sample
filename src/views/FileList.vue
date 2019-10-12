@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-center">Choose the files that you want to edit:</h1>
+    <h1 class="text-center">Choose the files to edit:</h1>
     <div class="card">
       <div class="card-body">
         <ul class="list-group list-group-flush">
