@@ -18,3 +18,10 @@ npm run serve
 ```
 npm run electron-dev
 ```
+### Compiles and serve for production
+```
+npm run build
+```
+```
+npm start
+```
